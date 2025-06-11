@@ -7,15 +7,35 @@ terraform {
   }
 }
 
+variable "aws_region" {
+  default = "us-east-1"
+}
+
+variable "github_token" {
+  sensitive = true
+  default = "some_token"
+}
+
 provider "aws" {
+  access_key = "test"
+  secret_key = "test"
+  skip_credentials_validation = true
+  skip_metadata_api_check = true
+  skip_requesting_account_id = true
   region = var.aws_region
+  endpoints {
+    s3 =      "http://localhost:5000/"
+    amplify = "http://localhost:5000/"
+    lambda =  "http://localhost:5000/"
+    rds =     "http://localhost:5000/"
+  }
 }
 
 # Amplify Frontend
 
 resource "aws_amplify_app" "application_frontend" {
   name        = "application_frontend"
-  repository  = var.frontend_repo
+  repository  = "https://github.com/cmking1997/backend-assessment.git" //this is a placeholder to just have some real github repo here
   oauth_token = var.github_token
 
   build_spec = <<-EOT
@@ -64,7 +84,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 data "archive_file" "lambda" {
   type        = "zip"
-  source_file = var.lambda_source
+  source_file = "https://github.com/cmking1997/backend-assessment/blob/main/app/api/card/route.tsx"
   output_path = "lambda_function_payload.zip"
 }
 
