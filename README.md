@@ -5,10 +5,12 @@ S3 for document storage and requirements there.
 RDS for regular data storage using mySQL, potentially could be swapped to PostgreSQL based on preference.
 If Route 53 is used that can be included, for custom domains but since this is a dev env i excluded it
 
-To start docker instance:
+I'm using Docker Desktop (on Windows)
+
+To start docker instance in terminal run:
 docker run --rm --name terraform-test -p 5000:5000 motoserver/moto:latest
 
-in docker instance:
+in docker instance terminal do:
 apt update
 apt-get install unzip
 apt install wget
